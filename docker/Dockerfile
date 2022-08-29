@@ -19,11 +19,22 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="$HOME/.cargo/bin:${PATH}"
 ENV RUSTFLAGS="-C target-feature=-crt-static"
 
-EXPOSE 4000
+EXPOSE 8000
 
-ENV PORT=4000 \
+ENV PORT=8000 \
     MIX_ENV="prod" \
-    SECRET_KEY_BASE="RMgI4C1HSkxsEjdhtGMfwAHfyT6CKWXOgzCboJflfSm4jeAlic52io05KB6mqzc5"
+    SECRET_KEY_BASE="hn1NqcT23E4xK5QFq3N0u1O2h9wreBe3gMDIWWPXVE+wztVX2r0wy8NMZiZ9Y0Ug" \
+    ETHEREUM_JSONRPC_VARIANT="geth" \
+    COIN="DCT" \
+    NETWORK="decommerce" \
+    SUBNETWORK="decommerce" \
+    ETHEREUM_JSONRPC_HTTP_URL="http://localhost:8545" \
+    ETHEREUM_JSONRPC_TRACE_URL="http://localhost:8545" \
+    ETHEREUM_JSONRPC_WS_URL="ws://localhost:8546" \
+    DATABASE_URL="postgresql://dbusername:download@localhost:5432/blockscout" \
+    KEYFILE="/home/waris_a/server_files/decommerce.key" \
+    CERTFILE="/home/waris_a/server_files/ssl-bundle.crt" \
+    BLOCK_TRANSFORMER="clique"
 
 # Cache elixir deps
 ADD mix.exs mix.lock ./

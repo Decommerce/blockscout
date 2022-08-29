@@ -1,20 +1,29 @@
-version: '3.8'
-
+version: '3.3'
 services:
   blockscout:
-    image: blockscout/blockscout:${DOCKER_TAG:-latest}
+    image: blockscout/blockscout
     restart: always
     container_name: 'blockscout'
-    command: 'mix do ecto.create, ecto.migrate, phx.server'
+    command: bash -c "mix phx.server"
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     env_file:
       -  ./envs/common-blockscout.env
     environment:
-        ETHEREUM_JSONRPC_VARIANT: 'geth'
-        ETHEREUM_JSONRPC_HTTP_URL: http://host.docker.internal:8545/
-        DATABASE_URL: postgresql://postgres:@host.docker.internal:5432/blockscout?ssl=false
-        ECTO_USE_SSL: false
+        SECRET_KEY_BASE: hn1NqcT23E4xK5QFq3N0u1O2h9wreBe3gMDIWWPXVE+wztVX2r0wy8NMZiZ9Y0Ug
+        ETHEREUM_JSONRPC_VARIANT: geth
+        COIN: DCT
+        NETWORK: decommerce
+        SUBNETWORK: decommerce
+        ETHEREUM_JSONRPC_HTTP_URL: http://localhost:8545/
+        ETHEREUM_JSONRPC_TRACE_URL: http://localhost:8545/
+        ETHEREUM_JSONRPC_WS_URL: ws://localhost:8546/
+        DATABASE_URL: postgresql://dbusername:download@localhost:5432/blockscout
+        PORT: 8000
+        KEYFILE: /home/waris_a/server_files/decommerce.key
+        CERTFILE: /home/waris_a/server_files/ssl-bundle.crt
+        MIX_ENV: prod
+        BLOCK_TRANSFORMER: clique
     ports:
-      - 4000:4000
-
+      - 8000:8000
+    network_mode: "host"
